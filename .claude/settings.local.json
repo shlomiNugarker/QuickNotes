@@ -22,7 +22,11 @@
       "Bash(tasklist)",
       "Bash(findstr \"node\")",
       "Bash(docker-compose ps frontend)",
-      "Bash(taskkill /PID 20048 /F)"
+      "Bash(taskkill /PID 20048 /F)",
+      "Bash(cat /c/Users/Shlomi/Desktop/QuickNotes/.env)",
+      "Bash(docker-compose ps)",
+      "Bash(curl -s http://localhost:3000/health)",
+      "Bash(cat build.log)"
     ],
     "deny": [],
     "ask": []
