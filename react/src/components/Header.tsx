@@ -5,7 +5,7 @@ import {
   NavigationMenuList,
   NavigationMenuItem,
 } from "@/components/ui/navigation-menu";
-import { Menu, X, Sparkles } from "lucide-react";
+import { Menu, X, FileText } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { LanguageToggle } from "./LanguageToggle";
 import { useAuth } from "@/context/AuthContext";
@@ -53,7 +53,7 @@ const Header = () => {
             <li>
               <Link
                 to={item.path}
-                className={`text-base font-medium transition-all duration-300 px-4 py-2 rounded-lg hover:bg-white/20 backdrop-blur-sm truncate ${
+                className={`text-sm font-medium transition-colors hover:text-primary px-3 py-2 ${
                   isMobile ? "text-center w-full block" : ""
                 }`}
               >
@@ -68,7 +68,7 @@ const Header = () => {
           <Button
             onClick={logout}
             variant="destructive"
-            className="bg-gradient-2 hover:shadow-glow"
+            size="sm"
           >
             {t("logout")}
           </Button>
@@ -80,7 +80,7 @@ const Header = () => {
               <Link to={item.path}>
                 <Button
                   variant={index === 0 ? "outline" : "default"}
-                  className={index === 0 ? "glass text-white hover:bg-white/20" : "bg-white text-primary hover:bg-white/90"}
+                  size="sm"
                 >
                   {item.label}
                 </Button>
@@ -93,14 +93,14 @@ const Header = () => {
   );
 
   return (
-    <div className="sticky w-full z-50 top-0 glass shadow-lg border-b border-white/20">
-      <header className="container mx-auto flex justify-between items-center p-4 text-white">
+    <div className="sticky w-full z-50 top-0 bg-white border-b border-border">
+      <header className="container mx-auto flex justify-between items-center p-4">
         {/* Logo */}
-        <Link to="/" className="flex items-center gap-2 group">
-          <div className="w-10 h-10 rounded-lg bg-gradient-1 flex items-center justify-center group-hover:scale-110 transition-transform">
-            <Sparkles className="w-6 h-6 text-white" />
+        <Link to="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
+          <div className="w-8 h-8 rounded-md bg-primary flex items-center justify-center">
+            <FileText className="w-5 h-5 text-white" />
           </div>
-          <span className="text-xl font-heading font-bold hidden sm:block">
+          <span className="text-lg font-semibold text-foreground">
             QuickNotes
           </span>
         </Link>
@@ -108,14 +108,14 @@ const Header = () => {
         {/* User Info - Desktop */}
         {user && (
           <div className="hidden md:flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full bg-gradient-3 text-white flex items-center justify-center font-bold text-sm shadow-lg">
+            <div className="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center font-medium text-sm">
               {user.email.charAt(0).toUpperCase()}
             </div>
             <div className="flex flex-col">
-              <span className="text-white font-semibold text-sm">
+              <span className="text-foreground font-medium text-sm">
                 {t("welcome")}
               </span>
-              <span className="text-white/80 text-xs truncate max-w-[150px]">
+              <span className="text-muted-foreground text-xs truncate max-w-[150px]">
                 {user.email}
               </span>
             </div>
@@ -126,18 +126,18 @@ const Header = () => {
         <button
           aria-label="Menu"
           onClick={toggleMenu}
-          className="md:hidden focus:outline-none text-white hover:scale-110 transition-transform"
+          className="md:hidden focus:outline-none text-foreground hover:text-primary transition-colors"
         >
           {isMenuOpen ? (
-            <X className="h-7 w-7" />
+            <X className="h-6 w-6" />
           ) : (
-            <Menu className="h-7 w-7" />
+            <Menu className="h-6 w-6" />
           )}
         </button>
 
         {/* Desktop Navigation */}
         <NavigationMenu dir={i18n.dir()} className="hidden md:flex">
-          <NavigationMenuList className="flex gap-4 items-center">
+          <NavigationMenuList className="flex gap-2 items-center">
             {renderMenuItems()}
           </NavigationMenuList>
         </NavigationMenu>
@@ -145,18 +145,18 @@ const Header = () => {
 
       {/* Mobile Navigation */}
       {isMenuOpen && (
-        <div className="md:hidden glass-dark border-t border-white/10 animate-slideUp">
-          <ul className="flex flex-col p-4 gap-3 items-stretch">
+        <div className="md:hidden bg-white border-t border-border animate-slideUp">
+          <ul className="flex flex-col p-4 gap-2 items-stretch">
             {user && (
-              <div className="flex items-center gap-3 p-3 rounded-lg bg-white/10 mb-2">
-                <div className="w-12 h-12 rounded-full bg-gradient-3 text-white flex items-center justify-center font-bold shadow-lg">
+              <div className="flex items-center gap-3 p-3 rounded-md bg-secondary mb-2">
+                <div className="w-10 h-10 rounded-full bg-primary text-white flex items-center justify-center font-medium">
                   {user.email.charAt(0).toUpperCase()}
                 </div>
                 <div className="flex flex-col flex-1">
-                  <span className="text-white font-semibold">
+                  <span className="text-foreground font-medium text-sm">
                     {t("welcome")}
                   </span>
-                  <span className="text-white/80 text-sm truncate">
+                  <span className="text-muted-foreground text-xs truncate">
                     {user.email}
                   </span>
                 </div>

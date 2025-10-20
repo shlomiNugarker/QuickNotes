@@ -47,19 +47,19 @@ const Login: React.FC = () => {
               <Sparkles className="w-8 h-8 text-white" />
             </div>
             <h1 className="text-4xl font-heading font-bold gradient-text mb-2">
-              {t("login_page") || "Welcome Back"}
+              {t("login_welcome")}
             </h1>
             <p className="text-muted-foreground">
-              Sign in to continue to QuickNotes
+              {t("login_subtitle")}
             </p>
           </div>
 
           {/* Login Card */}
           <Card className="glass shadow-colored-1 border-2 border-white/20 animate-scaleIn">
             <CardHeader>
-              <CardTitle className="text-2xl font-heading">Sign In</CardTitle>
+              <CardTitle className="text-2xl font-heading">{t("login_card_title")}</CardTitle>
               <CardDescription>
-                Enter your credentials to access your notes
+                {t("login_card_desc")}
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -81,7 +81,7 @@ const Login: React.FC = () => {
                       type="email"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
-                      placeholder="you@example.com"
+                      placeholder={t("email_placeholder")}
                       className="pl-10"
                       required
                       disabled={isLoading}
@@ -99,7 +99,7 @@ const Login: React.FC = () => {
                       type="password"
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
-                      placeholder="••••••••"
+                      placeholder={t("password_placeholder")}
                       className="pl-10"
                       required
                       disabled={isLoading}
@@ -113,10 +113,10 @@ const Login: React.FC = () => {
                   disabled={isLoading}
                 >
                   {isLoading ? (
-                    <span>Signing in...</span>
+                    <span>{t("signing_in")}</span>
                   ) : (
                     <>
-                      {t("login") || "Sign In"}
+                      {t("login")}
                       <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
                     </>
                   )}
@@ -125,12 +125,12 @@ const Login: React.FC = () => {
 
               <div className="mt-6 text-center">
                 <p className="text-sm text-muted-foreground">
-                  Don't have an account?{" "}
+                  {t("no_account")}{" "}
                   <Link
                     to="/register"
                     className="text-primary font-semibold hover:underline"
                   >
-                    Create one now
+                    {t("create_one")}
                   </Link>
                 </p>
               </div>
@@ -143,7 +143,7 @@ const Login: React.FC = () => {
               to="/"
               className="text-sm text-muted-foreground hover:text-foreground transition-colors inline-flex items-center gap-1"
             >
-              ← Back to Home
+              ← {t("back_to_home")}
             </Link>
           </div>
         </div>

@@ -25,25 +25,25 @@ const Register: React.FC = () => {
     setError("");
 
     if (password !== confirmPassword) {
-      setError("Passwords do not match!");
-      toast.error("Passwords do not match!");
+      setError(t("passwords_no_match"));
+      toast.error(t("passwords_no_match"));
       return;
     }
 
     if (password.length < 6) {
-      setError("Password must be at least 6 characters");
-      toast.error("Password must be at least 6 characters");
+      setError(t("password_min_length"));
+      toast.error(t("password_min_length"));
       return;
     }
 
     setIsLoading(true);
     try {
       await register(email, password);
-      toast.success("Registration successful!");
+      toast.success(t("registration_success"));
       navigate("/dashboard");
     } catch (err) {
-      setError((err as Error)?.message || "Registration failed");
-      toast.error((err as Error)?.message || "Registration failed");
+      setError((err as Error)?.message || t("registration_failed"));
+      toast.error((err as Error)?.message || t("registration_failed"));
     } finally {
       setIsLoading(false);
     }
@@ -61,19 +61,19 @@ const Register: React.FC = () => {
               <Sparkles className="w-8 h-8 text-white" />
             </div>
             <h1 className="text-4xl font-heading font-bold gradient-text mb-2">
-              {t("register_page") || "Create Account"}
+              {t("register_welcome")}
             </h1>
             <p className="text-muted-foreground">
-              Join QuickNotes and start organizing your thoughts
+              {t("register_subtitle")}
             </p>
           </div>
 
           {/* Register Card */}
           <Card className="glass shadow-colored-3 border-2 border-white/20 animate-scaleIn">
             <CardHeader>
-              <CardTitle className="text-2xl font-heading">Sign Up</CardTitle>
+              <CardTitle className="text-2xl font-heading">{t("register_card_title")}</CardTitle>
               <CardDescription>
-                Create your free account to get started
+                {t("register_card_desc")}
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -94,7 +94,7 @@ const Register: React.FC = () => {
                       type="text"
                       value={name}
                       onChange={(e) => setName(e.target.value)}
-                      placeholder="John Doe"
+                      placeholder={t("name_placeholder")}
                       className="pl-10"
                       required
                       disabled={isLoading}
@@ -112,7 +112,7 @@ const Register: React.FC = () => {
                       type="email"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
-                      placeholder="you@example.com"
+                      placeholder={t("email_placeholder")}
                       className="pl-10"
                       required
                       disabled={isLoading}
@@ -137,7 +137,7 @@ const Register: React.FC = () => {
                     />
                   </div>
                   <p className="text-xs text-muted-foreground">
-                    Minimum 6 characters
+                    {t("password_min_chars")}
                   </p>
                 </div>
 
@@ -165,10 +165,10 @@ const Register: React.FC = () => {
                   disabled={isLoading}
                 >
                   {isLoading ? (
-                    <span>Creating account...</span>
+                    <span>{t("creating_account")}</span>
                   ) : (
                     <>
-                      {t("register") || "Create Account"}
+                      {t("register")}
                       <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
                     </>
                   )}
@@ -178,32 +178,32 @@ const Register: React.FC = () => {
               {/* Benefits */}
               <div className="mt-6 space-y-2">
                 <p className="text-xs text-muted-foreground font-semibold">
-                  What you'll get:
+                  {t("what_you_get")}
                 </p>
                 <div className="space-y-2">
                   <div className="flex items-center gap-2 text-xs text-muted-foreground">
                     <CheckCircle2 className="w-4 h-4 text-accent" />
-                    <span>Unlimited notes and tags</span>
+                    <span>{t("benefit_unlimited")}</span>
                   </div>
                   <div className="flex items-center gap-2 text-xs text-muted-foreground">
                     <CheckCircle2 className="w-4 h-4 text-accent" />
-                    <span>Advanced search and filtering</span>
+                    <span>{t("benefit_search")}</span>
                   </div>
                   <div className="flex items-center gap-2 text-xs text-muted-foreground">
                     <CheckCircle2 className="w-4 h-4 text-accent" />
-                    <span>Secure cloud storage</span>
+                    <span>{t("benefit_storage")}</span>
                   </div>
                 </div>
               </div>
 
               <div className="mt-6 text-center">
                 <p className="text-sm text-muted-foreground">
-                  Already have an account?{" "}
+                  {t("already_have_account")}{" "}
                   <Link
                     to="/login"
                     className="text-primary font-semibold hover:underline"
                   >
-                    Sign in here
+                    {t("sign_in_here")}
                   </Link>
                 </p>
               </div>
@@ -216,7 +216,7 @@ const Register: React.FC = () => {
               to="/"
               className="text-sm text-muted-foreground hover:text-foreground transition-colors inline-flex items-center gap-1"
             >
-              ← Back to Home
+              ← {t("back_to_home")}
             </Link>
           </div>
         </div>

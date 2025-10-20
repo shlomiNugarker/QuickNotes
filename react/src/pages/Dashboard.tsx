@@ -7,23 +7,10 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Badge } from "../components/ui/badge";
 import { Plus, Search, Edit, Trash2, X } from "lucide-react";
 import { toast } from "sonner";
-import AnimatedBackground from "../components/AnimatedBackground";
-
-const gradients = [
-  "bg-gradient-1",
-  "bg-gradient-2",
-  "bg-gradient-3",
-  "bg-gradient-4",
-  "bg-gradient-5",
-  "bg-gradient-6",
-];
-
-const getGradientForNote = (id: string) => {
-  const index = id.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0) % gradients.length;
-  return gradients[index];
-};
+import { useTranslation } from "react-i18next";
 
 const Dashboard: React.FC = () => {
+  const { t } = useTranslation();
   const [notes, setNotes] = useState<Note[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTags, setSearchTags] = useState("");
@@ -132,26 +119,24 @@ const Dashboard: React.FC = () => {
   };
 
   return (
-    <div className="relative min-h-screen">
-      <AnimatedBackground variant="minimal" />
-
-      <div className="container relative mx-auto p-6 max-w-7xl">
+    <div className="min-h-screen bg-background">
+      <div className="container mx-auto p-6 max-w-7xl">
         {/* Header */}
-        <div className="mb-8 animate-fadeIn">
-          <h1 className="text-4xl font-heading font-bold gradient-text mb-2">My Notes</h1>
-          <p className="text-muted-foreground">Organize your thoughts beautifully</p>
+        <div className="mb-6">
+          <h1 className="text-3xl font-bold text-foreground mb-1">{t("dashboard_title")}</h1>
+          <p className="text-muted-foreground text-sm">{t("dashboard_subtitle")}</p>
         </div>
 
         {/* Actions Bar */}
-        <div className="mb-6 flex flex-col md:flex-row gap-4 items-stretch md:items-center animate-slideUp">
+        <div className="mb-6 flex flex-col md:flex-row gap-3 items-stretch md:items-center">
           {/* Search */}
           <div className="relative flex-1">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground" />
             <Input
-              placeholder="Filter by tags (comma-separated)..."
+              placeholder={t("filter_by_tags")}
               value={searchTags}
               onChange={(e) => setSearchTags(e.target.value)}
-              className="pl-10 glass"
+              className="pl-10"
             />
             {searchTags && (
               <button
@@ -169,36 +154,36 @@ const Dashboard: React.FC = () => {
             if (!open) resetForm();
           }}>
             <DialogTrigger asChild>
-              <Button className="bg-gradient-1 hover:shadow-glow group">
-                <Plus className="w-4 h-4 mr-2 group-hover:rotate-90 transition-transform" />
-                Create Note
+              <Button className="gap-2">
+                <Plus className="w-4 h-4" />
+                {t("create_note")}
               </Button>
             </DialogTrigger>
-            <DialogContent className="glass-dark">
+            <DialogContent>
               <DialogHeader>
-                <DialogTitle className="text-2xl font-heading gradient-text">Create New Note</DialogTitle>
+                <DialogTitle className="text-lg">{t("create_new_note")}</DialogTitle>
               </DialogHeader>
-              <form onSubmit={handleCreate} className="space-y-4">
+              <form onSubmit={handleCreate} className="space-y-3">
                 <Input
-                  placeholder="Title"
+                  placeholder={t("title_placeholder")}
                   value={formData.title}
                   onChange={(e) => setFormData({ ...formData, title: e.target.value })}
                   required
-                  className="text-lg font-semibold"
+                  className="font-medium"
                 />
                 <textarea
-                  className="w-full min-h-[150px] p-3 border rounded-lg bg-background/50 backdrop-blur-sm resize-none focus:outline-none focus:ring-2 focus:ring-primary"
-                  placeholder="Write your thoughts..."
+                  className="w-full min-h-[100px] p-3 border rounded-md bg-background resize-none focus:outline-none focus:ring-2 focus:ring-ring text-sm"
+                  placeholder={t("content_placeholder")}
                   value={formData.content}
                   onChange={(e) => setFormData({ ...formData, content: e.target.value })}
                   required
                 />
                 <Input
-                  placeholder="Tags (comma-separated)"
+                  placeholder={t("tags_placeholder")}
                   value={formData.tags}
                   onChange={(e) => setFormData({ ...formData, tags: e.target.value })}
                 />
-                <Button type="submit" className="w-full bg-gradient-3">Create</Button>
+                <Button type="submit" className="w-full">{t("create_button")}</Button>
               </form>
             </DialogContent>
           </Dialog>
@@ -221,93 +206,84 @@ const Dashboard: React.FC = () => {
             ))}
           </div>
         ) : filteredNotes.length === 0 ? (
-          <div className="text-center py-20 animate-scaleIn">
-            <div className="w-24 h-24 mx-auto mb-6 rounded-full bg-gradient-1 flex items-center justify-center">
-              <Plus className="w-12 h-12 text-white" />
+          <div className="text-center py-20">
+            <div className="w-20 h-20 mx-auto mb-4 rounded-full bg-secondary flex items-center justify-center">
+              <Plus className="w-10 h-10 text-muted-foreground" />
             </div>
-            <h3 className="text-2xl font-heading font-bold mb-2">
-              {searchTags ? "No notes found" : "No notes yet"}
+            <h3 className="text-xl font-semibold mb-2">
+              {searchTags ? t("no_notes_found") : t("no_notes_yet")}
             </h3>
-            <p className="text-muted-foreground mb-6">
+            <p className="text-muted-foreground mb-4">
               {searchTags
-                ? "Try different tags or create a new note"
-                : "Create your first note to get started!"}
+                ? t("try_different_tags")
+                : t("create_first_note_desc")}
             </p>
             {!searchTags && (
-              <Button onClick={() => setIsCreateDialogOpen(true)} className="bg-gradient-2">
-                <Plus className="w-4 h-4 mr-2" />
-                Create Your First Note
+              <Button onClick={() => setIsCreateDialogOpen(true)} className="gap-2">
+                <Plus className="w-4 h-4" />
+                {t("create_first_note_button")}
               </Button>
             )}
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filteredNotes.map((note, index) => (
-              <div
-                key={note.id}
-                className="animate-scaleIn hover-lift"
-                style={{ animationDelay: `${index * 0.05}s` }}
-              >
-                <Card className="h-full overflow-hidden border-2 border-transparent hover:border-primary/20 transition-all group">
-                  {/* Gradient Header */}
-                  <div className={`h-2 ${getGradientForNote(note.id)}`} />
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {filteredNotes.map((note) => (
+              <Card key={note.id} className="hover:shadow-md transition-shadow">
+                <CardHeader>
+                  <CardTitle className="line-clamp-1 text-lg">
+                    {note.title}
+                  </CardTitle>
+                  <CardDescription className="text-xs">
+                    {new Date(note.updatedAt).toLocaleDateString('en-US', {
+                      year: 'numeric',
+                      month: 'short',
+                      day: 'numeric'
+                    })}
+                  </CardDescription>
+                </CardHeader>
 
-                  <CardHeader>
-                    <CardTitle className="line-clamp-1 text-xl font-heading group-hover:gradient-text transition-all">
-                      {note.title}
-                    </CardTitle>
-                    <CardDescription className="text-xs">
-                      {new Date(note.updatedAt).toLocaleDateString('en-US', {
-                        year: 'numeric',
-                        month: 'short',
-                        day: 'numeric'
-                      })}
-                    </CardDescription>
-                  </CardHeader>
+                <CardContent className="space-y-4">
+                  <p className="text-sm text-muted-foreground line-clamp-3 leading-relaxed">
+                    {note.content}
+                  </p>
 
-                  <CardContent className="space-y-4">
-                    <p className="text-sm text-muted-foreground line-clamp-3 leading-relaxed">
-                      {note.content}
-                    </p>
-
-                    {note.tags.length > 0 && (
-                      <div className="flex flex-wrap gap-1">
-                        {note.tags.map((tag, idx) => (
-                          <Badge
-                            key={idx}
-                            variant={`gradient${(idx % 4) + 1}` as any}
-                            className="text-xs"
-                          >
-                            {tag}
-                          </Badge>
-                        ))}
-                      </div>
-                    )}
-
-                    <div className="flex gap-2 pt-2">
-                      <Button
-                        size="sm"
-                        variant="outline"
-                        onClick={() => openEditDialog(note)}
-                        className="flex-1 group/btn"
-                      >
-                        <Edit className="w-3 h-3 mr-1 group-hover/btn:rotate-12 transition-transform" />
-                        Edit
-                      </Button>
-                      <Button
-                        size="sm"
-                        variant="destructive"
-                        onClick={() => handleDelete(note.id)}
-                        disabled={isDeleting === note.id}
-                        className="flex-1 group/btn"
-                      >
-                        <Trash2 className="w-3 h-3 mr-1 group-hover/btn:scale-110 transition-transform" />
-                        {isDeleting === note.id ? "Deleting..." : "Delete"}
-                      </Button>
+                  {note.tags.length > 0 && (
+                    <div className="flex flex-wrap gap-1">
+                      {note.tags.map((tag, idx) => (
+                        <Badge
+                          key={idx}
+                          variant="secondary"
+                          className="text-xs"
+                        >
+                          {tag}
+                        </Badge>
+                      ))}
                     </div>
-                  </CardContent>
-                </Card>
-              </div>
+                  )}
+
+                  <div className="flex gap-2 pt-2">
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      onClick={() => openEditDialog(note)}
+                      className="flex-1 gap-1"
+                    >
+                      <Edit className="w-3 h-3" />
+                      {t("edit_button")}
+                    </Button>
+                    <Button
+                      size="sm"
+                      variant="destructive"
+                      onClick={() => handleDelete(note.id)}
+                      disabled={isDeleting === note.id}
+                      className="flex-1 gap-1"
+                    >
+                      <Trash2 className="w-3 h-3" />
+                      {isDeleting === note.id ? t("deleting") : t("delete_button")}
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
             ))}
           </div>
         )}
@@ -317,31 +293,31 @@ const Dashboard: React.FC = () => {
           setIsEditDialogOpen(open);
           if (!open) resetForm();
         }}>
-          <DialogContent className="glass-dark">
+          <DialogContent>
             <DialogHeader>
-              <DialogTitle className="text-2xl font-heading gradient-text">Edit Note</DialogTitle>
+              <DialogTitle className="text-lg">{t("edit_note")}</DialogTitle>
             </DialogHeader>
-            <form onSubmit={handleUpdate} className="space-y-4">
+            <form onSubmit={handleUpdate} className="space-y-3">
               <Input
-                placeholder="Title"
+                placeholder={t("title_placeholder")}
                 value={formData.title}
                 onChange={(e) => setFormData({ ...formData, title: e.target.value })}
                 required
-                className="text-lg font-semibold"
+                className="font-medium"
               />
               <textarea
-                className="w-full min-h-[150px] p-3 border rounded-lg bg-background/50 backdrop-blur-sm resize-none focus:outline-none focus:ring-2 focus:ring-primary"
-                placeholder="Content"
+                className="w-full min-h-[100px] p-3 border rounded-md bg-background resize-none focus:outline-none focus:ring-2 focus:ring-ring text-sm"
+                placeholder={t("content_label")}
                 value={formData.content}
                 onChange={(e) => setFormData({ ...formData, content: e.target.value })}
                 required
               />
               <Input
-                placeholder="Tags (comma-separated)"
+                placeholder={t("tags_placeholder")}
                 value={formData.tags}
                 onChange={(e) => setFormData({ ...formData, tags: e.target.value })}
               />
-              <Button type="submit" className="w-full bg-gradient-4">Update</Button>
+              <Button type="submit" className="w-full">{t("update_button")}</Button>
             </form>
           </DialogContent>
         </Dialog>
