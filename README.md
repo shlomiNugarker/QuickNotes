@@ -186,3 +186,8 @@ QuickNotes/
 - **Health Checks:** All services have automated health monitoring
 - **Hot Reload:** Use `docker-compose.override.yml` for development with live code updates
 - **Metrics:** Prometheus-compatible metrics available at `/metrics`
+
+
+![alt text](image.png)
+
+![alt text](image-1.png)
