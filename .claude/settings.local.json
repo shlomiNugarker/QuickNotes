@@ -1,0 +1,30 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm install --save-dev @types/bcrypt @types/passport-jwt)",
+      "Bash(chmod +x setup.sh)",
+      "Bash(npm run build)",
+      "Bash(docker-compose build)",
+      "Bash(docker-compose build --no-cache)",
+      "Bash(for i in {1..3})",
+      "Bash(do echo \"Attempt $i...\")",
+      "Bash(docker pull redis:7-alpine)",
+      "Bash(break)",
+      "Bash(done)",
+      "Bash(docker-compose up -d)",
+      "Bash(psql --version)",
+      "Bash(docker-compose -f docker-compose.simple.yml up -d)",
+      "Bash(docker pull nginx:alpine)",
+      "Bash(if not exist .env copy .env.example .env)",
+      "Bash(netstat -ano)",
+      "Bash(findstr :5173)",
+      "Bash(docker ps --format \"table {{.Names}}\\t{{.Ports}}\")",
+      "Bash(tasklist)",
+      "Bash(findstr \"node\")",
+      "Bash(docker-compose ps frontend)",
+      "Bash(taskkill /PID 20048 /F)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

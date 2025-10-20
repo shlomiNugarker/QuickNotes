@@ -1,0 +1,40 @@
+version: '3.8'
+
+services:
+  api-1:
+    build:
+      context: ./nestjs
+      dockerfile: Dockerfile.dev
+    command: npm run start:dev
+    volumes:
+      - ./nestjs:/app
+      - /app/node_modules
+    environment:
+      NODE_ENV: development
+      FRONTEND_URL: http://localhost:8080
+
+  api-2:
+    build:
+      context: ./nestjs
+      dockerfile: Dockerfile.dev
+    command: npm run start:dev
+    volumes:
+      - ./nestjs:/app
+      - /app/node_modules
+    environment:
+      NODE_ENV: development
+      FRONTEND_URL: http://localhost:8080
+
+  frontend:
+    build:
+      context: ./react
+      dockerfile: Dockerfile.dev
+    command: npm run dev -- --host
+    ports:
+      - "8080:5173"
+    volumes:
+      - ./react:/app
+      - /app/node_modules
+    environment:
+      NODE_ENV: development
+      VITE_API_URL: http://localhost:3000

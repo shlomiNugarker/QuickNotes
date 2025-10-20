@@ -23,14 +23,9 @@ const Header = () => {
 
   const menuItems = [
     {
-      label: t("home_page"),
-      path: "/",
-      roles: [""],
-    },
-    {
-      label: t("admin_dashboard"),
-      path: "/admin/users",
-      roles: ["admin"],
+      label: "Dashboard",
+      path: "/dashboard",
+      requireAuth: true,
     },
   ];
 
@@ -51,7 +46,7 @@ const Header = () => {
         <LanguageToggle changeLanguage={changeLanguage} />
       </li>
       {menuItems
-        .filter((item) => user && item.roles.includes(user.role))
+        .filter((item) => !item.requireAuth || user)
         .map((item, index) => (
           <NavigationMenuItem key={index} asChild>
             <li>
@@ -101,10 +96,10 @@ const Header = () => {
         {user && (
           <div className="flex items-center gap-3">
             <div className="w-12 h-12 rounded-full bg-gray-800 text-white flex items-center justify-center font-bold text-lg">
-              {user.name.charAt(0).toUpperCase()}
+              {user.email.charAt(0).toUpperCase()}
             </div>
             <span className="text-white font-semibold text-lg truncate">
-              {t("welcome")}, {user.name}!
+              {t("welcome")}, {user.email}!
             </span>
           </div>
         )}

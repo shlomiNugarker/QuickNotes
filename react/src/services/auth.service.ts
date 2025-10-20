@@ -8,17 +8,18 @@ export const authService = {
 };
 
 async function login(email: string, password: string) {
-  const user = await httpService.post("/api/auth/login", { email, password });
-  localStorage.setItem("token", user.token);
-  return user;
+  const response = await httpService.post("/auth/login", { email, password });
+  localStorage.setItem("token", response.access_token);
+  return response.user;
 }
 
-async function register(name: string, email: string, password: string) {
-  return httpService.post("/api/auth/register", {
-    name,
+async function register(email: string, password: string) {
+  const response = await httpService.post("/auth/register", {
     email,
     password,
   });
+  localStorage.setItem("token", response.access_token);
+  return response.user;
 }
 
 async function logout() {
@@ -30,5 +31,18 @@ async function logout() {
 }
 
 async function getUser() {
-  return httpService.get("/api/auth/me", true);
+  const token = localStorage.getItem("token");
+  if (!token) return null;
+
+  try {
+    // Decode JWT to get user info (basic client-side parsing)
+    const payload = JSON.parse(atob(token.split('.')[1]));
+    return {
+      id: payload.sub,
+      email: payload.email
+    };
+  } catch (error) {
+    console.error("Failed to parse token:", error);
+    return null;
+  }
 }

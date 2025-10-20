@@ -21,11 +21,15 @@ const Register: React.FC = () => {
       return;
     }
 
+    if (password.length < 6) {
+      setError("Password must be at least 6 characters");
+      return;
+    }
+
     try {
-      await register(name, email, password);
-      toast.success(t("register_success"));
-      alert("Registration successful!");
-      window.location.href = "/login";
+      await register(email, password);
+      toast.success("Registration successful!");
+      window.location.href = "/dashboard";
     } catch (err) {
       setError((err as Error)?.message || "Registration failed");
     }

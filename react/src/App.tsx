@@ -7,7 +7,6 @@ import Unauthorized from "./pages/Unauthorized";
 import Layout from "./components/Layout";
 import { useTranslation } from "react-i18next";
 import { useEffect } from "react";
-import AdminUsers from "./pages/AdminUsers.tsx";
 import Home from "./pages/Home.tsx";
 
 const AppRoutes = () => {
@@ -28,9 +27,8 @@ const AppRoutes = () => {
         <Route path="/" element={<Home />} />
         <Route path="/unauthorized" element={<Unauthorized />} />
 
-        <Route element={<ProtectedRoute allowedRoles={["admin"]} />}>
+        <Route element={<ProtectedRoute />}>
           <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/admin/users" element={<AdminUsers />} />
         </Route>
       </Route>
     </Routes>

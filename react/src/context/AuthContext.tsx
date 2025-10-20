@@ -2,10 +2,8 @@ import { authService } from "@/services/auth.service";
 import React, { createContext, useContext, useEffect, useState } from "react";
 
 interface User {
-  _id: string;
-  name: string;
+  id: string;
   email: string;
-  role: "admin" | "user";
 }
 
 interface AuthContextType {
@@ -14,7 +12,7 @@ interface AuthContextType {
   loading: boolean;
   login: (email: string, password: string) => Promise<void>;
   logout: () => void;
-  register: (name: string, email: string, password: string) => Promise<void>;
+  register: (email: string, password: string) => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -35,8 +33,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         return;
       }
       try {
-        const data = await authService.getUser();
-        setUser(data.user);
+        const userData = await authService.getUser();
+        setUser(userData);
       } catch (error) {
         console.error("Authentication error:", error);
         setToken(null);
@@ -51,15 +49,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const login = async (email: string, password: string): Promise<void> => {
     try {
-      const data = await authService.login(email, password);
-      if (!data.token) {
-        throw new Error("Login failed: No token received");
-      }
-      console.log("Login successful:", data);
+      const user = await authService.login(email, password);
+      const newToken = localStorage.getItem("token");
 
-      setToken(data.token);
-      setUser(data.user);
-      localStorage.setItem("token", data.token);
+      setToken(newToken);
+      setUser(user);
     } catch (error) {
       console.error("Login error:", error);
       throw error;
@@ -72,8 +66,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     setUser(null);
   };
 
-  const register = async (name: string, email: string, password: string) => {
-    await authService.register(name, email, password);
+  const register = async (email: string, password: string) => {
+    const user = await authService.register(email, password);
+    const newToken = localStorage.getItem("token");
+
+    setToken(newToken);
+    setUser(user);
   };
 
   return (
