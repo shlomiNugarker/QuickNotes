@@ -30,13 +30,13 @@ export class NotesService {
     return savedNote;
   }
 
-  async findAll(userId: string, tags?: string) {
+  async findAll(userId: string, tags?: string): Promise<Note[]> {
     const cacheKey = `notes:${userId}:${tags || 'all'}`;
 
     // Try to get from cache
     const cached = await this.redisClient.get(cacheKey);
     if (cached) {
-      return JSON.parse(cached);
+      return JSON.parse(cached) as Note[];
     }
 
     // Build query
@@ -49,10 +49,9 @@ export class NotesService {
     if (tags) {
       const tagArray = tags.split(',').map((tag) => tag.trim());
       tagArray.forEach((tag, index) => {
-        queryBuilder.andWhere(
-          `note.tags LIKE :tag${index}`,
-          { [`tag${index}`]: `%${tag}%` },
-        );
+        queryBuilder.andWhere(`note.tags LIKE :tag${index}`, {
+          [`tag${index}`]: `%${tag}%`,
+        });
       });
     }
 

@@ -14,7 +14,7 @@ import { User } from '../entities/user.entity';
     PassportModule,
     JwtModule.registerAsync({
       imports: [ConfigModule],
-      useFactory: async (configService: ConfigService) => ({
+      useFactory: (configService: ConfigService) => ({
         secret: configService.get('JWT_SECRET', 'your-secret-key'),
         signOptions: { expiresIn: '7d' },
       }),

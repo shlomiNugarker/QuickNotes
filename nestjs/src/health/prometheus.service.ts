@@ -1,5 +1,10 @@
 import { Injectable } from '@nestjs/common';
-import { register, collectDefaultMetrics, Counter, Histogram } from 'prom-client';
+import {
+  register,
+  collectDefaultMetrics,
+  Counter,
+  Histogram,
+} from 'prom-client';
 
 @Injectable()
 export class PrometheusService {
@@ -34,7 +39,12 @@ export class PrometheusService {
     this.httpRequestCounter.inc({ method, route, status });
   }
 
-  observeHttpDuration(method: string, route: string, status: number, duration: number) {
+  observeHttpDuration(
+    method: string,
+    route: string,
+    status: number,
+    duration: number,
+  ) {
     this.httpRequestDuration.observe({ method, route, status }, duration);
   }
 }

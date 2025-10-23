@@ -16,6 +16,13 @@ import { CreateNoteDto } from './dto/create-note.dto';
 import { UpdateNoteDto } from './dto/update-note.dto';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 
+interface RequestWithUser {
+  user: {
+    id: string;
+    email: string;
+  };
+}
+
 @Controller('notes')
 @UseGuards(JwtAuthGuard)
 export class NotesController {
@@ -23,25 +30,25 @@ export class NotesController {
 
   @Post()
   async create(
-    @Request() req,
+    @Request() req: RequestWithUser,
     @Body(ValidationPipe) createNoteDto: CreateNoteDto,
   ) {
     return this.notesService.create(req.user.id, createNoteDto);
   }
 
   @Get()
-  async findAll(@Request() req, @Query('tags') tags?: string) {
+  async findAll(@Request() req: RequestWithUser, @Query('tags') tags?: string) {
     return this.notesService.findAll(req.user.id, tags);
   }
 
   @Get(':id')
-  async findOne(@Request() req, @Param('id') id: string) {
+  async findOne(@Request() req: RequestWithUser, @Param('id') id: string) {
     return this.notesService.findOne(req.user.id, id);
   }
 
   @Put(':id')
   async update(
-    @Request() req,
+    @Request() req: RequestWithUser,
     @Param('id') id: string,
     @Body(ValidationPipe) updateNoteDto: UpdateNoteDto,
   ) {
@@ -49,7 +56,7 @@ export class NotesController {
   }
 
   @Delete(':id')
-  async remove(@Request() req, @Param('id') id: string) {
+  async remove(@Request() req: RequestWithUser, @Param('id') id: string) {
     return this.notesService.remove(req.user.id, id);
   }
 }
